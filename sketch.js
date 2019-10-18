@@ -1,12 +1,10 @@
-let mouseCounter = -1;
-let mouseCircle;
-const mouseAccept = 15;
+let ui;
 const bgColor = 100;
-const r = 10;
+
 function setup() {
   const minDim = min(windowWidth, windowHeight);
   createCanvas(minDim, minDim - 4);
-  mouseCircle = createVector(0);
+  ui = new UI();
   background(bgColor);
 }
 function windowResized() {
@@ -16,8 +14,9 @@ function windowResized() {
 }
 function draw() {
   background(bgColor);
-  if (mouseCheck()) {
-    mouseDraw();
+  const uiSelect = ui.mouseCheck()
+  if (uiSelect) {
+    ui.mouseDraw();
   }
 }
 function clamp(num, min, max) {
@@ -26,34 +25,55 @@ function clamp(num, min, max) {
 function average(arr) {
   return arr.reduce((a, b) => a + b, 0) / arr.length
 }
-function mouseDraw() {
-  push();
-  ellipseMode(RADIUS);
-  colorMode(HSB, 1);
-  const percent = clamp(mouseCounter / mouseAccept, 0, 1);
-  const zeroAngle = -HALF_PI;
-  stroke(0);
-  fill(0, 1, 1, .5);
-  circle(mouseCircle.x, mouseCircle.y, r);
-  stroke(color(.3, 1, map(percent, 0, 1, 0, .5)));
-  fill(color(.3, 1, map(percent, 0, 1, .5, 1)));
-  print(mouseCounter / mouseAccept);
-  arc(mouseCircle.x, mouseCircle.y, r, r, zeroAngle, zeroAngle + (percent * TWO_PI));
-  pop();
-}
-function mouseCheck() {
-  if (mouseIsPressed) {
-    mouseCounter++;
-    if (mouseCounter == 1) {
-      mouseCircle.set(mouseX, mouseY);
-    }
-    else if (mouseCounter > mouseAccept) {
-      mouseCounter = mouseAccept;
-    }
-    return true;
+
+
+
+
+
+
+
+
+
+
+
+
+
+class UI {
+  constructor() {
+    this.mouseCounter = -1;
+    this.cCenter = createVector(0);
+    this.mouseAccept = 15;
+    this.r = 10;
   }
-  else {
-    mouseCounter = 0;
-    return false;
+  mouseDraw() {
+    push();
+    ellipseMode(RADIUS);
+    colorMode(HSB, 1);
+    const percent = clamp(this.mouseCounter / this.mouseAccept, 0, 1);
+    const zeroAngle = -HALF_PI;
+    stroke(0);
+    fill(0, 1, 1, .5);
+    arc(this.cCenter.x, this.cCenter.y, this.r, this.r, zeroAngle + (percent * TWO_PI), zeroAngle);
+    stroke(.3, 1, map(percent, 0, 1, 0, .5));
+    fill(.3, 1, map(percent, 0, 1, .5, 1), .5);
+    // print(this.mouseCounter / this.mouseAccept);
+    arc(this.cCenter.x, this.cCenter.y, this.r, this.r, zeroAngle, zeroAngle + (percent * TWO_PI));
+    pop();
+  }
+  mouseCheck() {
+    if (mouseIsPressed) {
+      this.mouseCounter++;
+      if (this.mouseCounter == 1) {
+        this.cCenter.set(mouseX, mouseY);
+      }
+      else if (this.mouseCounter > this.mouseAccept) {
+        this.mouseCounter = this.mouseAccept;
+      }
+      return true;
+    }
+    else {
+      this.mouseCounter = 0;
+      return false;
+    }
   }
 }
