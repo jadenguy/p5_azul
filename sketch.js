@@ -56,7 +56,6 @@ class UI {
     arc(this.cCenter.x, this.cCenter.y, this.r, this.r, zeroAngle + (percent * TWO_PI), zeroAngle);
     stroke(.3, 1, map(percent, 0, 1, 0, .5));
     fill(.3, 1, map(percent, 0, 1, .5, 1), .5);
-    // print(this.mouseCounter / this.mouseAccept);
     arc(this.cCenter.x, this.cCenter.y, this.r, this.r, zeroAngle, zeroAngle + (percent * TWO_PI));
     pop();
   }
@@ -66,13 +65,15 @@ class UI {
       if (this.mouseCounter == 1) {
         this.cCenter.set(mouseX, mouseY);
       }
-      else if (this.mouseCounter > this.mouseAccept) {
+      else if (this.mouseCounter >= this.mouseAccept) {
         this.mouseCounter = this.mouseAccept;
+        this.done = true;
       }
       return true;
     }
     else {
       this.mouseCounter = 0;
+      this.done = false;
       return false;
     }
   }
