@@ -1,10 +1,10 @@
-let ui;
-const bgColor = 100;
+let input;
+const bgColor = 200;
 
 function setup() {
   const minDim = min(windowWidth, windowHeight);
   createCanvas(minDim, minDim - 4);
-  ui = new UI();
+  input = new InputChecker();
   background(bgColor);
 }
 function windowResized() {
@@ -14,9 +14,9 @@ function windowResized() {
 }
 function draw() {
   background(bgColor);
-  const uiSelect = ui.mouseCheck()
-  if (uiSelect) {
-    ui.mouseDraw();
+  const isInputted = input.Update()
+  if (isInputted) {
+    input.Draw();
   }
 }
 function clamp(num, min, max) {
@@ -38,7 +38,7 @@ function average(arr) {
 
 
 
-class UI {
+class InputChecker {
   constructor() {
     this.mouseCounter = -1;
     this.cCenter = createVector(0);
@@ -77,4 +77,6 @@ class UI {
       return false;
     }
   }
+  Update() { return this.mouseCheck(); }
+  Draw() { this.mouseDraw(); }
 }
