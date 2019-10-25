@@ -1,11 +1,14 @@
 let input;
+let bag;
 const bgColor = 200;
 
 function setup() {
   const minDim = min(windowWidth, windowHeight);
   createCanvas(minDim, minDim - 4);
   input = new InputChecker();
+  bag = new Bag();
   background(bgColor);
+
 }
 function windowResized() {
   const minDim = min(windowWidth, windowHeight);
